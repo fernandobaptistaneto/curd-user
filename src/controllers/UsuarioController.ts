@@ -23,14 +23,13 @@ export class UsuarioController {
         }
 
         // Encrypta a senha
-        const passwordEncript = bcrypt.hashSync(idExists.password, 8)
+        // const passwordEncript = bcrypt.hashSync(password, 8)
 
         //update usuário
         const update = await UsuarioRepository.createQueryBuilder().update(idExists).set({
-            username: username,
-            password: passwordEncript,
-        }).where("id_usuario = :id_usuario", { id_usuario: id_usuario }).returning('*').execute()
-
+            username: req.body.username,
+            password: bcrypt.hashSync(req.body.password, 8)
+        }).where("id_usuario = :id_usuario", { id_usuario: id_usuario },).returning('*').execute()
 
         //retornar update
         return res.json({ message: 'Dados alterados com sucesso', dados: update.raw })

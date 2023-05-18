@@ -20,7 +20,7 @@ export class AuthController {
         const isValidPassword = await bcrypt.compare(password, usuario.password)
 
         if (!isValidPassword) {
-            res.status(401).json({ message: 'Senha inválida' });
+            return res.status(401).json({ message: 'Senha inválida' });
         }
 
 
