@@ -2,6 +2,7 @@
 import { Request, Response } from 'express'
 import { UsuarioRepository } from '../repositories/UsuarioRepository';
 import bcrypt from 'bcryptjs';
+import Usuario from '../entities/Usuario';
 
 export class UsuarioController {
 
@@ -44,17 +45,21 @@ export class UsuarioController {
 
     // Cria um novo usuário
     async usuarioCreate(req: Request, res: Response): Promise<Response> {
-        const { username, password } = req.body
+        const { username, password, email } = req.body
 
         const usuarioExists = await UsuarioRepository.findOne({ where: { username } })
 
         if (usuarioExists) {
             return res.status(409).json({ message: 'Usuário já existe!' });
         }
+
         try {
-            const usuario = UsuarioRepository.create({ username, password })
+            const usuario = UsuarioRepository.create({ username, password, email })
+            if (!usuario.email && !usuario.username && !usuario.password) {
+                return res.json({ message: 'Preencher todos formulários!' });
+            }
             await UsuarioRepository.save(usuario)
-            return res.json({ message: 'Usuário criado com sucesso!', dadosNovoUsuario: usuario })
+            return res.status(200).json({ message: 'Usuário criado com sucesso!', dadosNovoUsuario: usuario })
 
         } catch (error) {
             return res.status(500).json({ message: 'Internal Server Error', error })

@@ -12,7 +12,7 @@ router.post('/login', AuthController.autenticarUsuario)
 router.get('/usuarioId', authMiddleware, UsuarioController.listarUsuarioId)
 router.put('/usuarioUpdate', authMiddleware, UsuarioController.atualizarDados)
 router.delete('/usuarioDelete', authMiddleware, UsuarioController.usuarioDelete)
-router.get('/usuarioList', authMiddleware, UsuarioController.list)
+router.get('/usuarioList', UsuarioController.list)
 
 
 

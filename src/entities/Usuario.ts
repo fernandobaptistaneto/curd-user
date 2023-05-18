@@ -22,7 +22,6 @@ export class Usuario {
   hashPassword() {
     this.password = bcrypt.hashSync(this.password, 8)
   }
-
 }
 
 export default Usuario
